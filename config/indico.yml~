@@ -1,0 +1,5 @@
+development:
+  api_key: '13673b28de6ed8fcba0fa7edbe53d112'
+
+production:
+  api_key: '13673b28de6ed8fcba0fa7edbe53d112'

@@ -1,0 +1,240 @@
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>Twitter Sentiment Analysis</title>
+    <link data-turbolinks-track="true" href="css/bootstrap.min.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/font-awesome.min.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/c3.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/jqcloud.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/jquery-ui.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/jquery-jvectormap-2.0.3.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/application.css?body=1" media="all" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand reload-page" href="#" ><i class="fa fa-2x fa-twitter"></i></a>
+        </div>
+      </div>  
+    </nav>
+    <br>
+    <br>
+    <div class="container">
+      <div id="search-tweet" class="row" style="display: none;">
+        <div class="col-md-offset-3 col-lg-6">
+          <form class="navbar-form" id="new-search-form" method="POST" >
+            <div class="input-group custom-search-form width-108">
+              <input type="text" id="text" name="text" autocomplete="off" class="form-control input-lg search-field" placeholder="#tag or @tweet or some text ..." required="required">
+              <span class="input-group-btn">
+                <button class="btn btn-lg btn-primary btn-search" type="button">
+                  <span class="fa fa-search"></span>
+               </button>
+              </span>
+            </div>
+          </form>           
+        </div>
+      </div>
+      <div id="check-token" class="row" >
+        <div class="col-md-offset-3 col-lg-6">
+          <form class="navbar-form" id="check-token-form" method="POST" >
+            <div class="input-group custom-search-form width-108">
+              <input type="text" id="token-field" autocomplete="off" class="form-control input-lg search-field" placeholder="Insert security token" required="required">
+              <span class="input-group-btn">
+                <button class="btn btn-lg btn-primary btn-token" type="button">
+                  <span class="fa fa-chevron-right"></span>
+               </button>
+              </span>
+            </div>
+          </form>         
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-3 col-lg-6">
+          <div id="twitter-warning-alert" class="alert alert-dismissible alert-warning" style="display: none;" >
+            <p><h4 class="center"><strong>Please, insert valid tweet</strong></h4></p>
+          </div>
+          <div id="twitter-error-alert" class="alert alert-dismissible alert-danger" style="display: none;" >
+            <p><h4 class="center"><strong>Ops! Somethings was wrong</p></strong></h4></p>
+          </div>
+          <div id="token-error-alert" class="alert alert-dismissible alert-danger" style="display: none;" >
+            <p><h4 class="center"><strong>Authentication Token not valid!</p></strong></h4></p>
+          </div>
+          <div id="success-token-alert" class="alert alert-dismissible alert-success" style="display: none;" >
+            <p><h4 class="center"><strong>Valid Token!</p></strong></h4></p>
+          </div>
+          <div id="no-data-found" class="alert alert-dismissible alert-warning" style="display: none;" >
+            <p><h4 class="center"><strong>No data found!</p></strong></h4></p>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <div class="row">
+        <div id="result-panel">
+          <div class="row">
+            <div class="col-md-offset-3 col-lg-6 center">
+              <div class="alert alert-sentiment alert-negative" style="display: none;">
+                <h2 class="alert-sentiment-text">
+                  <i class="fa fa-2x alert-sentiment-icon"></i>
+                  <span class="alert-sentiment-label"></span>
+                  <span class="alert-sentiment-percent"></span>
+                </h2>  
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <div id="trend" class="panel panel-primary resizable" style="display: none;">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Trend</h3>
+                </div>
+                <div class="panel-body">
+                  <div id="trend-body-loader" class="center">
+                    <i class="fa fa-5x fa-spinner fa-pulse"></i>
+                  </div>
+                  <div id="trend-body">                   
+                  </div>
+                </div>
+                <div class="panel-footer">
+                  Click on dot to see original Tweet
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div id="geocode" class="panel panel-primary resizable" style="display: none;">
+              <div class="panel-heading">
+                <h3 class="panel-title">Location of twitter's user</h3>
+              </div>
+              <div class="panel-body">
+                <div id="geocode-tweet-body" style="height: 500px;" ></div>
+              <div class="panel-footer">
+                This chart not representing tweet location, but the user Twitter location
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div id="tag-cloud" class="panel panel-primary resizable" style="display: none;">
+              <div class="panel-heading">
+                <h3 class="panel-title">Tag Cloud</h3>
+              </div>
+              <div class="panel-body">
+                <div id="tag-cloud-body-loader" class="center">
+                  <i class="fa fa-5x fa-spinner fa-pulse"></i>
+                </div>
+                <div id="tag-cloud-body"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div id="keywords" class="panel panel-primary resizable" style="display: none;">
+              <div class="panel-heading">
+                <h3 class="panel-title">Keywords</h3>
+              </div>
+              <div class="panel-body">
+                <div id="keywords-body-loader" class="center">
+                  <i class="fa fa-5x fa-spinner fa-pulse"></i>
+                </div>
+                  <div id="keywords-body"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="center">
+            <a href="#" class="btn btn-info btn-blocl btn-show-raw-result" style="display: none;">Show raw JSON</a>
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-md-offset-2 col-md-8">
+              <div id="info-chart-panel" class="well well-sm" style="display: none;">
+                  <div class="row">
+                      <div class="col-sm-6">
+                        <h4 class="info-title">INFO</h4>
+                          <p>
+                            <dl class="dl-horizontal">
+                              <dt>Max monthly Request:</dt>
+                              <dd><span id="max_monthly_request">...</span></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                              <dt>Request executed in month:</dt>
+                              <dd><span id="tot_request_executed">...</span></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                              <dt>Monthly request available:</dt>
+                              <dd><span id="request_avaiable">...</span></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                              <dt>Current cycle start:</dt>
+                              <dd><span id="range_start_at">...</span></dd>
+                            </dl>
+                            <dl class="dl-horizontal">
+                              <dt>Current cycle end:</dt>
+                              <dd><span id="range_end_at">...</span></dd>
+                            </dl>
+                          </p>
+                      </div>                      
+                      <div class="col-sm-6 ">
+                          <div id="info-chart-panel-body">
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="tweet-modal-detail" >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">
+                Tweet
+                <span id="tweet-iframe-title"></span>
+              </h4>
+            </div>
+            <div class="modal-body">
+              <div class="row center">
+                <iframe border="0" frameborder="0" id="tweet-iframe-detail" >
+                </iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="tweet-raw-json" >
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">
+                Raw JSON Results
+              </h4>
+            </div>
+            <div class="modal-body">
+              <pre id="tweet-raw-json-body"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" id="token" value=""/>
+    </div>
+
+    <script data-turbolinks-track="true" src="js/jquery-2.1.4.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/bootstrap.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/d3.v3.min.js" charset="utf-8"></script></script>
+    <script data-turbolinks-track="true" src="js/c3.min.js"></script>
+    <script data-turbolinks-track="true" src="js/jqcloud-1.0.4.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/jquery-ui.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/jquery.jvectormap.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/jquery-jvectormap-world-mill-en.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/application.js?body=1"></script>
+  </body>
+</html>

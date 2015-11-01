@@ -1,0 +1,136 @@
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <title>Twitter Sentiment Analysis</title>
+    <link data-turbolinks-track="true" href="css/bootstrap.min.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/font-awesome.min.css?body=1" media="all" rel="stylesheet">
+    <link data-turbolinks-track="true" href="css/application.css?body=1" media="all" rel="stylesheet">
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand reload-page" href="#" ><i class="fa fa-2x fa-twitter"></i></a>
+        </div>
+      </div>  
+    </nav>
+    <div class="container">
+      <div class="page-header">
+      	<h1>Rails Tweet Setiment</h1>
+      </div>
+      <div style="margin-left: 50px; margin-right: 50px;">
+        <div class="page-header">
+          <h3>1. Introduzione</h3>
+        </div>
+        <p style="font-size: 17px;">"Rails Tweet Sentiment " è una web app che nasce con l'idea di effettuare&nbsp;<a href="https://en.wikipedia.org/wiki/Sentiment_analysis" target="_blank">Sentiment Analysis</a>&nbsp;su tweet.</p>
+        <p style="font-size: 17px;">Lo scopo di effettuare l'analisi dei tweet è quello di "decifrare" il possibile&nbsp;<a href="https://en.wikipedia.org/wiki/Linear_trend_estimation" target="_blank">Trend</a>&nbsp;a cui un Tag o una Persona possono essere soggetti.&nbsp;</p>
+        <p style="font-size: 17px;">L'Analisi del Sentiment è un analisi di tipo statistico volta a fotografare il pensiero degli utenti rispetto ad un&nbsp;<a href="https://en.wikipedia.org/wiki/Brand" target="_blank">Brand</a>.</p>
+        <div class="page-header">
+          <h3>2. Manuale d'uso</h3>
+        </div>
+        <div style="margin-left: 50px;">
+          <div class="page-header">
+            <h4>2.1 Login</h4>
+          </div>
+          <p style="font-size: 17px;">Essendo il sistema esposto pubblicamente in Internet e utilizzando librerie esterne (elencate di seguito) si è reso necessarie garantire la sicurezza dell'applicativo.<span style="line-height: 29.4px;">
+          <p style="font-size: 17px;">Il sistema utilizza una procedura di autenticazione basata su&nbsp;</span><a href="https://en.wikipedia.org/wiki/Access_token" target="_blank" style="line-height: 25.2px; background-color: rgb(255, 255, 255);">token</a></p>
+          <div class="page-header">
+            <h4>2.2 Ricerca</h4>
+          </div>
+          <p><span style="font-size: 18px;">Una volta superata l'autenticazione, è possibile effettuare ricerche in 3 diverse modalità:</span></p>
+          <ul>
+          <li><span style="font-size: 18px;">Tramite </span><span style="font-weight: bold; font-size: 18px;">#TAG </span><span style="font-size: 18px;">(esempio: #love, #java, #rails, ....)</span></li>
+          <li><span style="font-size: 18px;">Tramite </span><span style="font-weight: bold; font-size: 18px;">@USER </span><span style="font-size: 18px;">(esempio: @BarakObama, @ketyperry, @twitter, ...)</span></li>
+          <li><span style="font-size: 18px;">Tramite </span><span style="font-weight: bold; font-size: 18px;">TESTO </span><span style="font-size: 18px;">(esempio: developer, love, italy, ....)</span></li>
+          </ul>
+          <p><br></p>
+          <p><span style="font-size: 18px;">
+            <strong>NB:</strong> la ricercare può resituire al massimo <b>100</b> risultati, non è possibile averne di più perchè non si è a disposizione di un accaount premium di Indico (vedi sotto).
+          </span></p>
+          <div class="page-header">
+            <h4>2.3 Visualizzazione Risultati</h4>
+          </div>
+          <p><span style="font-size: 18px; line-height: 21.6px;">La visualizzazione dei risultati avviene nel seguente modo: <br><br></span></p>
+          <table class="table table-bordered">
+          <tbody>
+          <tr>
+          <td style="width: 25%;"><span style="font-size: 18px; line-height: 21.6px;"><h4>Sentimento Medio</h4></span><br></td>
+          <td><span style="font-size: 18px; line-height: 21.6px;">Mostra la media dei "sentiment" dei vari tweet. Se il valore è minore di 40% allora il sentimento è&nbsp;</span><span style="font-size: 18px; line-height: 21.6px; font-weight: bold;">NEGATIVO</span><span style="font-size: 18px; line-height: 21.6px;">, se compreso tra 40% e 60% è&nbsp;</span><span style="font-size: 18px; line-height: 21.6px; font-weight: bold;">NEUTRO</span><span style="font-size: 18px; line-height: 21.6px;">, se maggiore di 60% è&nbsp;</span><span style="font-size: 18px; line-height: 21.6px; font-weight: bold;">POSITIVO.</span><br></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>Trend</h4></span></td>
+          <td><span style="font-size: 18px;">Viene mostrato un grafico formato dal "sentiment" dei singoli tweet. Cliccando sul tweet (il punto nel grafico) &nbsp;viene visualizzata una finestra modale contente l IFRAME del tweet stesso&nbsp;</span></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>Location of twitter's user</h4></span></td>
+          <td><span style="font-size: 18px;">Mostra una mappa in scala mondiale le nazionalità e il relativo conteggio degli utenti che hanno effettuato &nbsp;tweet secondo il criterio di ricerca.</span></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>Tag Cloud</h4></span></td>
+          <td><span style="font-size: 18px;">Mostra una "Tag Cloud" contenente i relativi "tag" associati al criterio di ricerca</span></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>Keywords</h4></span></td>
+          <td><span style="font-size: 18px;">Mostra una "Tag Cloud" contenente le relative "keywords" associate al criterio di ricerca</span></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>JSON</h4></span></td>
+          <td><span style="font-size: 18px;">JSON contenete il "dataSource" prodotto dal server e sul quale sono stati prodotti i grafici.</span></td>
+          </tr>
+          <tr>
+          <td><span style="font-size: 18px;"><h4>Info</h4></span></td>
+          <td><span style="font-size: 18px;">Pannello riassuntivo sullo stato mensile dell'utenza&nbsp;</span></td>
+          </tr>
+          </tbody>
+          </table>
+        </div>
+        <div class="page-header">
+          <h3>3. Teconologie usate</h3>
+        </div>
+        <div style="margin-left: 50px;">
+          <div class="page-header">
+            <h4>3.1 Backend</h4>
+          </div>
+          <ul>
+          <li><span style="font-size: 18px; line-height: 21.6px;"><span style="font-weight: bold; font-size: 18px;">Ruby On Rails</span><span style="font-size: 18px;">: Open source web framework bsato su Ruby (</span></span><a href="http://rubyonrails.org/"><span style="font-size: 18px;">http://rubyonrails.org</span></a><span style="font-size: 18px;">):</span></li>
+          <li><span style="font-weight: bold; font-size: 18px;">MySQL</span><span style="font-size: 18px;">: DBMS famoso per stabilità e performance (</span><a href="https://www.mysql.it/" target="_blank"><span style="font-size: 18px;">https://www.mysql.it</span></a><span style="font-size: 18px;">).</span></li>
+          </ul>
+          <div class="page-header">
+            <h4>3.2 Servizi di terze parti</h4>
+          </div>
+          <ul>
+          <li><span style="font-size: 18px; line-height: 21.6px;"><span style="font-weight: bold; font-size: 18px;">Twitter</span><span style="font-size: 18px;">: Vengono utilizzate le API pubbliche esposte da Twitter (</span></span><a href="https://dev.twitter.com/" target="_blank"><span style="font-size: 18px;">https://dev.twitter.com</span></a><span style="font-size: 18px;">,&nbsp;</span><a href="https://github.com/sferik/twitter/" target="_blank"><span style="font-size: 18px;">https://github.com/sferik/twitter</span></a><a href="http://rubyonrails.org/"><span style="font-size: 18px;"></span></a><span style="font-size: 18px;">):</span></li>
+          <li><span style="font-weight: bold; font-size: 18px;">Indico</span><span style="font-size: 18px;">: Sistema che offre servizi di machine-learning (</span><a href="https://www.indico.io/" target="_blank"><span style="font-size: 18px;">https://www.indico.io</span></a><a href="https://www.mysql.it/" target="_blank"><span style="font-size: 18px;"></span></a><span style="font-size: 18px;">).</span><span style="font-size: 18px;">&nbsp;&nbsp;</span><span style="line-height: 1.2; font-weight: bold; font-size: 18px;">NB:</span><span style="line-height: 1.2;"><span style="font-size: 18px;">&nbsp;Viene utilizzata una utenza FREE, per cui si ha una limitazione dei servizi, </span><span style="font-weight: bold; font-size: 18px;">MAX 50.000 r</span><span style="font-size: 18px;">ichieste mensili e tempi di risposta più lenti.</span></span></li>
+          <li><span style="line-height: 1.2;"><span style="font-weight: bold; font-size: 18px;">Geocoder</span><span style="font-size: 18px;">: Utilizzato per la geolocalizzazione (</span></span><a href="https://developers.google.com/maps/documentation/geocoding/intro" target="_blank"><span style="font-size: 18px;">https://developers.google.com</span></a><span style="font-size: 18px;">,&nbsp;</span><a href="https://github.com/alexreisner/geocoder" target="_blank"><span style="font-size: 18px;">https://github.com/alexreisner/geocoder</span></a><span style="line-height: 1.2; font-size: 18px;">)</span></li>
+          </ul>
+          <div class="page-header">
+            <h4>3.3 Frontend</h4>
+          </div>
+          <ul>
+            <li><span style="font-size: 18px; font-weight: bold; line-height: 21.6px;">JQuery: </span><span style="font-size: 18px; line-height: 21.6px;">Semplice, Potente e veloce libreria JS (</span><a href="https://jquery.com/" target="_blank"><span style="font-size: 18px;">https://jquery.com</span></a><span style="font-size: 18px; line-height: 21.6px;">).</span></li>
+            <li><span style="font-size: 18px; line-height: 21.6px;"><span style="font-weight: bold; font-size: 18px;">Twitter Bootstrap</span><span style="font-size: 18px;">: Interfaccia grafica contenente HTML,CSS e JS (</span></span><a href="http://getbootstrap.com/" target="_blank"><span style="font-size: 18px;">http://getbootstrap.com</span></a><span style="font-size: 18px;">).</span></li>
+            <li><span style="font-weight: bold; font-size: 18px;">JQuery UI</span><span style="font-size: 18px;">: Libreria JQuery per effetti grafici (</span><a href="https://jqueryui.com/" target="_blank"><span style="font-size: 18px;">https://jqueryui.com</span></a><span style="font-size: 18px;">).</span></li>
+            <li><span style="font-weight: bold; font-size: 18px;">C3</span><span style="font-size: 18px;">: Librereia per disegnare Grafici, implementa&nbsp;</span><a href="http://d3js.org/" target="_blank"><span style="font-size: 18px;">d3</span></a><span style="font-size: 18px;">, (</span><a href="http://c3js.org/" target="_blank"><span style="font-size: 18px;">http://c3js.org</span></a><span style="font-size: 18px;">).</span></li>
+            <li><span style="font-size: 18px;"><b>jVectorMap</b>: Libreria usata per visualizzare Mappe (</span><a href="http://jvectormap.com/" target="_blank"><span style="font-size: 18px;">http://jvectormap.com</span></a><span style="font-size: 18px;">).</span></li>
+            </ul>
+        </div>
+        <div class="page-header">
+          <h3>4. API REST</h3>
+        </div>    
+        <p><span style="font-size: 18px;">Il sistema esponi API REST:</span></p>
+        <p><br></p>
+        <p><span style="font-size: 18px;">Per effettuare una ricerca:</span></p>
+        <pre style="line-height: 1.42857;"><span style="font-size: 14px;">curl -X POST --data "text='TEXT-TO-SEARCH'" http://51.254.200.28/api/v1/search -H 'Authorization: Token token="TOKEN"'</span></pre>
+        <p style="line-height: 1.42857;"><br></p>
+        <p style="line-height: 1.42857;"><span style="font-size: 18px;">Per ottenere Info su utenza:</span></p>
+        <pre><span style="line-height: 18.5714px; font-size: 14px;">curl  </span><span style="line-height: 1.42857; font-size: 14px;">http://51.254.200.28</span><span style="line-height: 18.5714px; font-size: 14px;">/api/v1/info -H 'Authorization: Token token="TOKEN"'</span><br></pre>
+        <br><p></p>
+      </div>
+       
+
+    <script data-turbolinks-track="true" src="js/jquery-2.1.4.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/bootstrap.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/jquery-ui.min.js?body=1"></script>
+    <script data-turbolinks-track="true" src="js/application.js?body=1"></script>
+  </body>
+</html>
