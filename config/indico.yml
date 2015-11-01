@@ -1,0 +1,5 @@
+development:
+  api_key: 'API_KEY'
+
+production:
+  api_key: 'API_KEY'
